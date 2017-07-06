@@ -1,9 +1,10 @@
 package com.java_8_training.problems.collectors;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
-public class Dish {
+public class Dish{
 
     private  String name;
     private  boolean vegetarian;
@@ -37,6 +38,14 @@ public class Dish {
 
     public enum Type { MEAT, FISH, OTHER }
     public enum CaloricLevel { DIET, NORMAL, FAT }
+
+    public CaloricLevel getCaloricLevel(){
+        if(this.getCalories() > 0 && this.getCalories() <= 400)
+            return CaloricLevel.DIET;
+        else if(this.getCalories() > 400 && this.getCalories() <= 700)
+            return CaloricLevel.NORMAL;
+        else return CaloricLevel.FAT;
+    }
 
     @Override
     public String toString() {
