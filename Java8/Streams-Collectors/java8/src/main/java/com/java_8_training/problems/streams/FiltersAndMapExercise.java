@@ -142,8 +142,12 @@ public class FiltersAndMapExercise {
         // HINT: use map and reduce
         int min = 0;
 
-        min = personList.stream().map(Person::getAge).reduce(Integer.MAX_VALUE, (acc, x) -> Integer.min(acc, x))
-        //min = personList.stream().collect(minBy(Person::getAge));
+        Optional<Person> optional = Optional.empty();
+
+        //min = personList.stream().map(Person::getAge).reduce(Integer.MAX_VALUE, (acc, x) -> Integer.min(acc, x));
+        optional = personList.stream().collect(Collectors.minBy(Comparator.comparingInt(Person::getAge)));
+
+        min = optional.get().getAge();
 
         return min;
     }
