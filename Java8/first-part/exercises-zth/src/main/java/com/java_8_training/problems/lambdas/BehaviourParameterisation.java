@@ -22,10 +22,15 @@ public class BehaviourParameterisation {
     public static void main(String[] args) {
         List<Apple> inventory = Arrays.asList(new Apple(80, "green"), new Apple(155, "green"), new Apple(120, "red"));
 
-
+        System.out.println("Bad Way");
         prettyPrintHeavyLightApple(inventory);
-        //prettyPrintOnlyWeightApple(inventory);
-        // prettyPrintApple(inventory, ???);
+        prettyPrintOnlyWeightApple(inventory, new AppleWeightPrinter());
+
+        System.out.println("Good Way");
+        // print apple color
+        prettyPrintApple(inventory, new AppleColorPrinter());
+        // print apple weight
+        prettyPrintApple(inventory, new AppleWeightPrinter());
     }
 
     public static void prettyPrintHeavyLightApple(List<Apple> inventory) {
@@ -42,9 +47,54 @@ public class BehaviourParameterisation {
      *
      * @param inventory
      */
-    public static void prettyPrintOnlyWeightApple(List<Apple> inventory) {
+    public static void prettyPrintOnlyWeightApple(List<Apple> inventory, Printer<Apple> applePrinter) {
         Objects.requireNonNull(inventory, "Inventory must not be null");
         //TODO
+        for (Apple apple : inventory) {
+            applePrinter.print(apple);
+            // System.out.println("An apple of " + apple.getWeight() + " grams.");
+        }
     }
 
+    public static void prettyPrintApple(List<Apple> inventory, Printer printer) {
+        for (Apple apple : inventory) {
+            printer.print(apple);
+        }
+    }
+
+}
+
+@FunctionalInterface
+interface Printer<T> {
+    public void print(T apple);
+
+    default void test(){
+
+    }
+
+}
+
+class AppleColorPrinter implements Printer<Apple> {
+
+    @Override
+    public void print(Apple apple) {
+        System.out.println("A " + apple.getColor() + " apple");
+    }
+}
+class AppleWeightPrinter implements Printer<Apple> {
+
+    @Override
+    public void print(Apple apple) {
+        System.out.println("An apple of " + apple.getWeight() + " grams.");
+    }
+}
+
+class CustomPrinter implements Printer {
+
+    @Override
+    public void print(Object object) {
+        if (object instanceof Apple) {
+            Apple apple = (Apple) object;
+        }
+    }
 }

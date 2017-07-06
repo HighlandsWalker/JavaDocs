@@ -19,12 +19,15 @@ public class LambdasRefactor {
         //TODO: refactor to use lambda expression
 
         List<Apple> inventory = asList(new Apple(80, "green"), new Apple(155, "green"), new Apple(120, "red"));
-        inventory.sort(new Comparator<Apple>() {
-            @Override
-            public int compare(Apple apple1, Apple apple2) {
-                return apple2.getWeight().compareTo(apple1.getWeight());
-            }
-        });
+//        inventory.sort(new Comparator<Apple>() {
+//            @Override
+//            public int compare(Apple apple1, Apple apple2) {
+//                return apple2.getWeight().compareTo(apple1.getWeight());
+//            }
+//        });
+
+        inventory.sort((a1, a2) -> a1.getWeight().compareTo(a2.getWeight()));
+
         return inventory;
     }
 
@@ -34,14 +37,17 @@ public class LambdasRefactor {
         // TODO: refactor to use standard functional interface
         List<Apple> inventory = asList(new Apple(80, "green"), new Apple(155, "green"), new Apple(120, "red"));
 
-        List<Apple> greenApples = filterApples(inventory, new ApplePredicate() {
-            @Override
-            public boolean test(Apple apple) {
-                return "green".equals(apple.getColor());
-            }
-        });
+//        List<Apple> greenApples = filterApples(inventory, new ApplePredicate() {
+//            @Override
+//            public boolean test(Apple apple) {
+//                return "green".equals(apple.getColor());
+//            }
+//        });
 
-        return inventory;
+        String destColor = "green";
+        List<Apple> greenApples = filterApples(inventory, (a1) -> a1.getColor().equals(destColor));
+
+        return greenApples;
     }
 
     private static List<Apple> filterApples(List<Apple> inventory, ApplePredicate p) {
@@ -54,6 +60,7 @@ public class LambdasRefactor {
         return result;
     }
 
+    @FunctionalInterface
     interface ApplePredicate {
         boolean test(Apple apple);
     }
