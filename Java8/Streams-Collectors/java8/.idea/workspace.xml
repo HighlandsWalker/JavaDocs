@@ -35,8 +35,8 @@
       <file leaf-file-name="FiltersAndMapExercise.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/java_8_training/problems/streams/FiltersAndMapExercise.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="181">
-              <caret line="143" column="0" lean-forward="true" selection-start-line="143" selection-start-column="0" selection-end-line="143" selection-end-column="0" />
+            <state relative-caret-position="102">
+              <caret line="144" column="8" lean-forward="true" selection-start-line="144" selection-start-column="8" selection-end-line="144" selection-end-column="8" />
               <folding />
             </state>
           </provider>
@@ -948,7 +948,7 @@
       <workItem from="1499110201210" duration="29566000" />
       <workItem from="1499279101843" duration="8631000" />
       <workItem from="1499319957793" duration="381000" />
-      <workItem from="1499339522315" duration="12045000" />
+      <workItem from="1499339522315" duration="12216000" />
     </task>
     <servers />
   </component>
@@ -985,7 +985,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="71849000" />
+    <option name="totallyTimeSpent" value="72020000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -1355,8 +1355,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/java_8_training/problems/streams/FiltersAndMapExercise.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="181">
-          <caret line="143" column="0" lean-forward="true" selection-start-line="143" selection-start-column="0" selection-end-line="143" selection-end-column="0" />
+        <state relative-caret-position="102">
+          <caret line="144" column="8" lean-forward="true" selection-start-line="144" selection-start-column="8" selection-end-line="144" selection-end-column="8" />
           <folding />
         </state>
       </provider>
