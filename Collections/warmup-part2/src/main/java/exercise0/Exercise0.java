@@ -1,5 +1,9 @@
 package exercise0;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * Created by Radu.Hoaghe on 4/20/2015.
  *
@@ -17,8 +21,19 @@ public class Exercise0 {
         // TODO Exercise #0 a) Create a Map (HashMap) and add elements to it (using put() method)
         // TODO Exercise #0 a) Hint: Don't forget to specify the types of the key and value when creating the Map
 
+        Map<Integer, String> map = new HashMap<Integer, String>();
+
+        map.put(1,"Ana");
+        map.put(2, "Marius");
+        map.put(3, "Mihai");
+        map.put(4, "Casandra");
+
+        Set<Integer> keySet = map.keySet();
+
         // TODO Exercise #0 b) Iterate over the Map using keySet() method and print all its elements
         // TODO Exercise #0 b) The elements could be printed like this: [key1=value1, key2=value2, ...]
+
+        Iterator<>
         
     }
 
