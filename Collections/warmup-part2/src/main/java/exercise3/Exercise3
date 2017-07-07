@@ -1,0 +1,33 @@
+/**
+ * @author Cristian Dumitru
+ * @since 7/6/2017.
+ */
+
+Let's see why it is so important to have the hashCode() and equals() methods correctly overridden.
+
+Create a class for a Student and add the first name and last name properties. Then, create a constructor that initializes those properties and add the getters and setters for them.
+
+(a) Now create another class that extends the Student class and override the equals and hash code methods like this:
+    hash code: returns the hashcode ONLY for the first name property.
+    equals: checks if two objects are equal taking into account ONLY the first name property.
+
+(b) Now create another class that extends the Student class and override the equals and hash code methods like this:
+    hash code: returns the hashcode ONLY for the first name property.
+    equals: must be correctly implemented for all the properties.
+
+(c) Now create another class that extends the student class and override the equals and hash code methods like this:
+    hash code: must be correctly implemented for all the properties.
+    equals: checks if two objects are equal taking into account ONLY the first name property.
+
+(d) Now create another class that extends the student class and override the equals and hash code methods like this:
+    hash code: must be correctly implemented for all the properties.
+    equals: must be correctly implemented for all the properties.
+
+Now create another class that suits the main() method where we create 4 MAPS where the KEY will be of type STUDENT and the VALUE will be a BigDecimal representing the age (or whatever).
+In the first Map, the key will be an object from point (a), in the second map it will be an object from point (b), in the third map it will be an object from point (c) and in the last map it be an object from point (d).
+Think and set the proper properties for the objects in order to observe what can go wrong with our dictionaries.
+
+Give suggestive names for the classes and print the content of the dictionaries using Iterator!
+Do this exercises inside the exercise3 package.
+
+Good luck! :D
