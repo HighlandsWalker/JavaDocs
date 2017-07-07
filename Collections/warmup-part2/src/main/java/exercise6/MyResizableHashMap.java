@@ -1,5 +1,6 @@
 package exercise6;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Set;
 
@@ -42,25 +43,41 @@ public class MyResizableHashMap<K, V> {
      * The number of entries stored in the Map.
      */
     private int size;
+    private int capacity;
 
     public MyResizableHashMap() {
 
         // TODO Initialize buckets list
-        buckets = new
-
+        buckets = new Node[DEFAULT_BUCKET_ARRAY_SIZE];
+        capacity = DEFAULT_BUCKET_ARRAY_SIZE;
     }
 
     private void resize() {
         // TODO function that does the rehashing of the HashMap
+        if (this.size%this.capacity > LOAD_FACTOR ) {
+            this.capacity *= INCREASE_SIZE_FACTOR;
+            buckets = Arrays.copyOf(buckets, this.capacity);
+        }
     }
 
     public V get(K key) {
         // TODO
+
         return null;
     }
 
     public void put(K key, V value) {
         // TODO
+        if(key == null){
+
+        } else {
+            Node<K,V> box = buckets[Math.abs(key.hashCode())%capacity];
+            while(box.getNextElement() != null){
+                box = box.getNextElement();
+            }
+            Node<K,V> elem = new Node<K,V>(new MyEntry<K,V>(key,value),key.hashCode(),null);
+
+        }
     }
 
     public Set<K> keySet() {
