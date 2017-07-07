@@ -46,6 +46,8 @@ public class MyResizableHashMap<K, V> {
     public MyResizableHashMap() {
 
         // TODO Initialize buckets list
+        buckets = new
+
     }
 
     private void resize() {

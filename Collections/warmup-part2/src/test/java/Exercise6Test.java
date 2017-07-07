@@ -155,10 +155,10 @@ public class Exercise6Test {
         HashMap<String, String> expected = getExpected();
 
         Assert.assertEquals("Test if expected contains all the entries from MyHashMap", true,
-                expected.entrySet().containsAll(myHashMap.entrySet()));
+                expected.keySet().containsAll(myHashMap.keySet()));
 
         Assert.assertEquals("Test if MyHashMap contains all the entries from expected", true,
-                myHashMap.entrySet().containsAll(expected.entrySet()));
+                myHashMap.keySet().containsAll(expected.keySet()));
     }
 
     @Test

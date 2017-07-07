@@ -30,9 +30,15 @@ public class Exercise1 {
         // The list of countries that start with the 'R' character
         List<String> seekingCountries = new ArrayList<String>();
 
-        // TODO Exercise #1 a) You need to iterate over the map keys using a foreach loop (see Map.keySet())
-        // TODO Exercise #1 a) and add the countries that start with 'R' character into the seekingCountries list
-        // TODO Exercise #1 a) hint: see String documentation
+        // Exercise #1 a) You need to iterate over the map keys using a foreach loop (see Map.keySet())
+        // Exercise #1 a) and add the countries that start with 'R' character into the seekingCountries list
+        // Exercise #1 a) hint: see String documentation
+
+        for(String each : countries.keySet()){
+            if(each.startsWith("R")){
+                seekingCountries.add(each);
+            }
+        }
 
         return seekingCountries;
     }
@@ -42,9 +48,15 @@ public class Exercise1 {
         // The list of countries that contain the 'Q' character
         List<String> seekingCountries = new ArrayList<String>();
 
-        // TODO Exercise #1 b) You need to iterate over the map entries using a foreach loop (see Map.Entry)
-        // TODO Exercise #1 b) and convert to lowercase (hint: String documentation) all the countries that contain 'Q'
-        // TODO Exercise #1 b) or 'q' letter into the seekingCountries list
+        // Exercise #1 b) You need to iterate over the map entries using a foreach loop (see Map.Entry)
+        // Exercise #1 b) and convert to lowercase (hint: String documentation) all the countries that contain 'Q'
+        // Exercise #1 b) or 'q' letter into the seekingCountries list
+
+        for(String each : countries.keySet()){
+            if(each.contains("Q") || each.contains("q")){
+                seekingCountries.add(each.toLowerCase());
+            }
+        }
 
         return seekingCountries;
     }
@@ -54,8 +66,14 @@ public class Exercise1 {
         // The capital city with the longest name
         String seekingCapital = "";
 
-        // TODO Exercise #1 c) You need to iterate over the map values using a foreach loop (see Map.values())
-        // TODO Exercise #1 c) and find the capital city with the longest name
+        // Exercise #1 c) You need to iterate over the map values using a foreach loop (see Map.values())
+        // Exercise #1 c) and find the capital city with the longest name
+
+        for(String each : countries.keySet()){
+            if(countries.get(each).length() > seekingCapital.length()){
+                seekingCapital = countries.get(each);
+            }
+        }
 
         return seekingCapital;
     }
