@@ -1,0 +1,6 @@
+org\samiky\beanvalidationsample\entities\Car.class
+org\samiky\beanvalidationsample\entities\Human.class
+org\samiky\beanvalidationsample\entities\Person.class
+org\samiky\beanvalidationsample\DoTheValidation.class
+org\samiky\beanvalidationsample\entities\Gender.class
+org\samiky\beanvalidationsample\entities\ArithmeticOperation.class

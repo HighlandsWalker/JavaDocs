@@ -1,0 +1,317 @@
+MAVEN examples:
+
+--------------------------------------------------
+
+1. Install maven
+- go to maven.apache.org
+- download latest version, zip file (maven 3.5.0)
+- verify JAVA_HOME: echo %JAVA_HOME% or java -version
+- unzip maven archive
+- add MVN_HOME\bin to the PATH env var
+- verify installation: mvn -version
+
+--------------------------------------------------
+
+2. Configure maven
+- MAVEN_OPTS environment variable
+ex. SET MAVEN_OPTS="-Xms1024m -Xmx4096m -XX:PermSize=1024m"
+or SET MAVEN_OPTS=-Dmaven.repo.local=C:\repository
+
+- settings.xml file
+global settings: ${maven.home}/conf/settings.xml
+user’s settings: ${user.home}/.m2/settings.xml
+
+see: servers, mirrors, proxies, 
+	profiles (activation: jdk, os, property, file), 
+	properties (env.X, project.x, settings.x, Java System Properties eq ${java.home}, x: Set within a <properties />), 
+	repositories (snapshots, releases, enabled)
+	
+env.X: Prefixing a variable with “env.” will return the shell’s environment variable. For example, ${env.PATH} contains the \$path environment variable (%PATH% in Windows).
+project.x: A dot (.) notated path in the POM will contain the corresponding element’s value. For example: <project><version>1.0</version></project> is accessible via ${project.version}.
+settings.x: A dot (.) notated path in the settings.xml will contain the corresponding element’s value. For example: <settings><offline>false</offline></settings> is accessible via ${settings.offline}.
+Java System Properties: All properties accessible via java.lang.System.getProperties() are available as POM properties, such as ${java.home}.
+x: Set within a <properties /> element or an external files, the value may be used as ${someVar}.
+
+--------------------------------------------------
+
+3. Run maven
+- help: mvn --help
+
+- build a project: mvn package (see phases & goals)
+
+- fresh build: mvn clean install (install to the local repo)
+or mvn clean deploy (deploy to a remote repo)
+
+- generate a project: mvn archetype:generate
+
+--------------------------------------------------
+
+4. How to create a project with Maven template
+
+- use mvn archetype:generate to generate a project from a list of existing Maven templates. 
+In Maven 3.x.x, there are 1000+ templates...
+
+$ mvn archetype:generate > templates.txt
+
+- let's generate a web project from an existing Spring-Hibernate
+$ mvn archetype:generate
+
+... when asking for a template, supply 'springmvc-spring-hibernate' then Enter ...
+... last version 8, 
+..choose 'groupId': : com.mkyong.web
+.. choose 'artifactId': : myweb
+.. choose package':  com.mkyong.web:
+
+- most important templates
+maven-archetype-webapp – Java Web Project (WAR)
+maven-archetype-quickstart – Java Project (JAR)
+
+- generate a project directly, without interactive prompts:
+$ mvn archetype:generate -DgroupId=com.mkyong.core -DartifactId=ProjectName -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+
+--------------------------------------------------
+
+5. generate sources & javadocs for a project
+
+$ mvn archetype:generate -DgroupId=com.timnet.workshop -DartifactId=mvnSrcJavadoc -Dversion=1.0 -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+
+$ cd mvnSrcJavadoc
+
+$ mvn clean install
+
+- Add maven-source-plugin in your pom.xml file
+
+add this in build/plugins
+
+//
+<plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-source-plugin</artifactId>
+		<executions>
+			<execution>
+				<id>attach-sources</id>
+				<goals>
+					<goal>jar</goal>
+				</goals>
+			</execution>
+		</executions>
+	   </plugin>
+//
+
+$ mvn install
+
+- Browse to your local repository, you will notice two jar files are created
+
+$ cd {user-home-dir}\.m2\repository\com\timnet\workshop\mvnSrcJavadoc\1.0
+mvnSrcJavadoc-1.0.jar (classes)
+mvnSrcJavadoc-1.0-sources.jar (source code)
+
+- add maven-javadoc-plugin to your pom.xml
+
+//
+<plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.10.4</version>
+            </plugin>
+//
+
+$ mvn javadoc:javadoc
+... will generate javadocs in target/site/apidocs/
+
+$ mvn javadoc:jar
+.. will generate a jar containing javadocs in target/mvnSrcJavadoc-1.0-javadoc.jar
+
+--------------------------------------------------
+
+6. Create a simple project (java project)
+
+- create project (generate it)
+$ mvn archetype:generate -DgroupId=org.sonatype.mavenbook -DartifactId=simple -Dpackage=org.sonatype.mavenbook -Dversion=1.0-SNAPSHOT
+
+$ cd simple
+
+- see directory structure: pom.xml, src/main/java, src/test/java
+
+- build it: 
+$ mvn clean install
+
+- run main class:
+$ java -cp target/simple-1.0-SNAPSHOT.jar org.sonatype.mavenbook.App
+
+- where is the actual config? because pom.xml is very simple...
+$ mvn help:effective-pom
+Effective POM = Super POM + settings + actual pom
+
+- open pom.xml, see project coordinates G.A.V. + packaging
+
+- run all the tests
+$ mvn test
+
+- run a single test
+
+create a new test class
+
+cd src/test/java
+
+create class org.sonatype.mavenbook.AnotherAppTest
+
+//
+package org.sonatype.mavenbook;
+
+import junit.framework.TestCase;
+
+public class AnotherAppTest extends TestCase {
+    
+    public AnotherAppTest(String testName) {
+        super(testName);
+    }
+
+    public void testApp()
+    {
+        assertEquals("a", "a");
+    }
+}
+//
+
+$ mvn -Dtest=org.sonatype.mavenbook.AnotherAppTest test
+
+- skip tests
+
+$ mvn package -DskipTests
+or
+$ mvn package -Dmaven.test.skip=true
+
+--------------------------------------------------
+
+7. Create a simple java web appplication
+
+- create project
+$ mvn archetype:generate -DgroupId=org.sonatype.mavenbook.simpleweb -DartifactId=simple-webapp -Dpackage=org.sonatype.mavenbook -Dversion=1.0-SNAPSHOT
+
+, then chooses maven-archetype-webapp as a filter, etc.
+
+$ cd simple-webapp
+
+- set Maven Compiler plugin to target Java 5
+add this to <build>
+
+<plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.3</version>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                </configuration>
+            </plugin>
+        </plugins>
+		
+$ mvn clean install
+		
+see packaging = war & finalname = simple-webapp, check target/ folder
+
+- add Jetty plugin to build/plugins
+
+<plugin>
+                <groupId>org.mortbay.jetty</groupId>
+                <artifactId>maven-jetty-plugin</artifactId>
+            </plugin>
+			
+$ mvn clean install
+$ mvn jetty-run
+
+go to http://localhost:8080 or directly to http://localhost:8080/simple-webapp/
+
+- add a simple servlet
+
+create a servlet (java class) 'org.sonatype.mavenbook.web.SimpleServlet' in folder src/main/java
+
+//
+package org.sonatype.mavenbook.web;
+
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+
+public class SimpleServlet extends HttpServlet {
+    public void doGet(HttpServletRequest request,
+                      HttpServletResponse response)
+        throws ServletException, IOException {
+
+        PrintWriter out = response.getWriter();
+        out.println( "SimpleServlet Executed" );
+        out.flush();
+        out.close();
+    }
+}
+//
+
+modify web.xml, add the servlet and servlet-mapping elements
+? where is web.xml ?
+
+//
+<servlet>
+    <servlet-name>simple</servlet-name>
+    <servlet-class>
+      org.sonatype.mavenbook.web.SimpleServlet
+    </servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>simple</servlet-name>
+    <url-pattern>/simple</url-pattern>
+  </servlet-mapping>
+//
+
+compile project:
+$ mvn compile
+
+ ...will fail ... why ?
+ 
+add servlet dependency
+we’ll add the Servlet API as a dependency to the project’s POM. See 'provided' scope. it means it's provided by the runtime, no need to add it as a normal (compile time) dependency
+
+... what is the runtime ? ... of course, it's jetty - a servlet and JSP container; it already contains the servlet API and implementation
+
+add this to dependencies
+
+//
+<dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.4</version>
+            <scope>provided</scope>
+        </dependency>
+//
+
+$ mvn clean install
+$ mvn jetty:run
+go to http://localhost:8080/simple-webapp/simple
+
+--------------------------------------------------
+
+8. Display project dependencies
+
+- goto the previous project myweb
+
+$ cd myweb
+
+- display dependencies
+$ mvn dependency:tree
+
+- build classpath
+$ mvn dependency:build-classpath
+
+further see maven dep plugin usages
+
+https://maven.apache.org/plugins/maven-dependency-plugin/index.html
+
+--------------------------------------------------
+
+See other examples
+
+mkyong maven examples
+http://www.mkyong.com/tag/maven/
+
+Maven by example:
+http://books.sonatype.com/mvnex-book/reference/index.html
