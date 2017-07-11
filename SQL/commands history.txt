@@ -88,4 +88,68 @@ DELETE FROM employees;
 DELETE FROM jobs;
 DELETE FROM departments;
 DELETE FROM locations;
-DELETE FROM departments;
+
+DROP TABLE employees;
+DROP TABLE jobs;
+DROP TABLE departments;
+DROP TABLE locations;
+
+-- scripts installed and deployed
+
+select * from employees;
+select * from jobs;
+select * from departments;
+select * from locations;
+
+select first_name, last_name from employees;
+select * from employees where department_id = 50;
+UPDATE employees SET salary = (salary + salary*0.3) where department_id = 50;
+select * from employees where employee_id = 101;
+
+ALTER TABLE employees DROP FOREIGN KEY manager_id;
+ALTER TABLE employees DROP CONSTRAINT manager_id;'
+
+--
+
+select * from employees where job_id = upper('it_prog');
+select count(employee_id) from employees d where d.job_id = 'IT_PROG';
+
+select * from employees a
+left join departments b on a.department_id = b.department_id order by 1;
+
+select a.employee_id, a.first_name, a.last_name, b.department_id, b.department_name from employees a
+left join departments b on a.department_id = b.department_id order by 1;
+
+select * from (select a.employee_id, a.first_name, a.last_name, b.department_id, b.department_name, b.location_id from employees a
+left join departments b on a.department_id = b.department_id) c left join locations d on c.location_id=d.location_id where d.location_id=1700;
+
+
+CREATE OR REPLACE VIEW employees_view AS
+SELECT employee_id, first_name, department_name
+FROM (select * from (select a.employee_id, a.first_name, a.last_name, b.department_id, b.department_name, b.location_id from employees a
+left join departments b on a.department_id = b.department_id) c left join locations d on c.location_id=d.location_id)
+
+select * from employees_view;
+
+SELECT sysdate from dual
+
+select to_char(sysdate, 'dd-MM-yyyy') from dual
+
+select to_date ('25-11-2014', 'dd-MM-yyyy') from dual
+
+select upper(first_name), lower(email) from employees;'
+
+select 'First name: ' || first_name from employees;
+
+select count(employee_id) from employees;
+
+select count(employee_id) from employees where job_id='IT_PROG';
+
+select count(employee_id) from employees group by department_id;
+
+select avg(salary) from employees where department_id=50;
+
+select min(salary), max(salary) from employees where department_id=50;
+
+select min(salary), max(salary) from (select a.employee_id, a.first_name, a.last_name,a.salary, b.department_id, b.department_name, b.location_id from employees a
+left join departments b on a.department_id = b.department_id) where location_id=1700;
