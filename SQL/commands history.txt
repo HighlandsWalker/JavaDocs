@@ -1,0 +1,91 @@
+select * from emp;
+
+
+CREATE TABLE locations (
+  LOCATION_ID     NUMBER PRIMARY KEY,
+  STREET_ADDRESS  VARCHAR2(40),
+  POSTAL_CODE     VARCHAR2(12),
+  CITY            VARCHAR2(30)     NOT NULL,
+  STATE_PROVINCE  VARCHAR2(25)
+);
+
+CREATE TABLE departments(
+  DEPARTMENT_ID    NUMBER PRIMARY KEY,
+  DEPARTMENT_NAME  VARCHAR2(30)            NOT NULL,
+  LOCATION_ID      NUMBER
+);
+
+CREATE TABLE jobs(
+  JOB_ID      NUMBER PRIMARY KEY,
+  JOB_TITLE   VARCHAR2(35)                 NOT NULL,
+  MIN_SALARY  NUMBER(6),
+  MAX_SALARY  NUMBER(6)
+);
+
+CREATE TABLE employees(
+  EMPLOYEE_ID     NUMBER PRIMARY KEY,
+  FIRST_NAME      VARCHAR2(20),
+  LAST_NAME       VARCHAR2(25)     NOT NULL,
+  EMAIL           VARCHAR2(25)     NOT NULL,
+  PHONE_NUMBER    VARCHAR2(20),
+  HIRE_DATE       DATE                  NOT NULL,
+  JOB_ID          VARCHAR2(10)     NOT NULL,
+  SALARY          NUMBER(8,2),
+  COMMISSION_PCT  NUMBER(2,2),
+  MANAGER_ID      NUMBER,
+  DEPARTMENT_ID   NUMBER
+);
+
+CREATE SEQUENCE TAB_DEPARTMENTS_SEQ
+ START WITH     1
+ INCREMENT BY   1;
+CREATE SEQUENCE TAB_EMPLOYEES_SEQ
+ START WITH     1
+ INCREMENT BY   1;
+CREATE SEQUENCE ZTH_SEQ
+ START WITH     406
+ INCREMENT BY   1;
+
+ALTER TABLE employees ADD FOREIGN KEY (department_id) REFERENCES departments(department_id);
+ALTER TABLE employees ADD FOREIGN KEY (job_id) REFERENCES jobs(job_id);
+ALTER TABLE employees MODIFY JOB_ID number;
+ALTER TABLE employees ADD FOREIGN KEY (job_id) REFERENCES jobs(job_id);
+ALTER TABLE employees ADD FOREIGN KEY (manager_id) REFERENCES employees(employee_id);
+insert into departments values
+(  TAB_DEPARTMENTS_SEQ.nextval,
+   'Administration',
+   1700
+);
+
+select * from departments;
+
+insert into jobs values
+(1, 'President', 20000, 40000);
+
+
+ALTER TABLE employees MODIFY job_id number;
+
+INSERT INTO departments values (
+10, 'CEO',20);
+
+INSERT INTO employees
+     		VALUES (TAB_EMPLOYEES_SEQ.nextval,
+             	  'Steven',
+                    'King',
+                    'SKING',
+                    '515.123.4567',
+                    sysdate,
+                    1,
+                    24000,
+                    NULL,
+                    NULL,
+           10);
+
+delete from employees
+where employee_id = 5;
+
+DELETE FROM employees;
+DELETE FROM jobs;
+DELETE FROM departments;
+DELETE FROM locations;
+DELETE FROM departments;
