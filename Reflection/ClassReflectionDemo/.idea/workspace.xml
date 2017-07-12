@@ -13,11 +13,11 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="ClassReflectionDemoMain.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="ClassReflectionDemoMain.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/ro/teamnet/zerotohero/reflection/ClassReflectionDemoMain.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="188">
-              <caret line="159" column="12" lean-forward="false" selection-start-line="159" selection-start-column="12" selection-end-line="159" selection-end-column="12" />
+            <state relative-caret-position="120">
+              <caret line="143" column="12" lean-forward="false" selection-start-line="143" selection-start-column="12" selection-end-line="143" selection-end-column="12" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1545#1554#0" expanded="true" />
@@ -36,11 +36,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TestFieldClass.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="TestFieldClass.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ro/teamnet/zerotohero/reflection/demoobjects/TestFieldClass.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="168">
               <caret line="24" column="10" lean-forward="false" selection-start-line="24" selection-start-column="10" selection-end-line="24" selection-end-column="10" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ClassReflectionDemoMain.class" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/out/production/ClassReflectionDemo/ro/teamnet/zerotohero/reflection/ClassReflectionDemoMain.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-1377">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -64,8 +74,8 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/src/ro/teamnet/zerotohero/reflection/demoobjects/DemoClass.java" />
-        <option value="$PROJECT_DIR$/src/ro/teamnet/zerotohero/reflection/ClassReflectionDemoMain.java" />
         <option value="$PROJECT_DIR$/src/ro/teamnet/zerotohero/reflection/demoobjects/TestFieldClass.java" />
+        <option value="$PROJECT_DIR$/src/ro/teamnet/zerotohero/reflection/ClassReflectionDemoMain.java" />
       </list>
     </option>
   </component>
@@ -605,12 +615,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1499845565270</updated>
-      <workItem from="1499845566848" duration="9702000" />
+      <workItem from="1499845566848" duration="10012000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="9702000" />
+    <option name="totallyTimeSpent" value="10012000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -672,16 +682,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/out/production/ClassReflectionDemo/ro/teamnet/zerotohero/reflection/ClassReflectionDemoMain.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-97">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#529#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://D:/TEMP/JavaDocs-master (1)/JavaDocs-master/Reflection/ClassReflectionDemo/src/ro/teamnet/zerotohero/reflection/ClassReflectionDemoMain.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -724,22 +724,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ro/teamnet/zerotohero/reflection/ClassReflectionDemoMain.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="188">
-          <caret line="159" column="12" lean-forward="false" selection-start-line="159" selection-start-column="12" selection-end-line="159" selection-end-column="12" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1545#1554#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ro/teamnet/zerotohero/reflection/demoobjects/TestFieldClass.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="168">
           <caret line="24" column="10" lean-forward="false" selection-start-line="24" selection-start-column="10" selection-end-line="24" selection-end-column="10" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/out/production/ClassReflectionDemo/ro/teamnet/zerotohero/reflection/ClassReflectionDemoMain.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1377">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ro/teamnet/zerotohero/reflection/ClassReflectionDemoMain.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="143" column="12" lean-forward="false" selection-start-line="143" selection-start-column="12" selection-end-line="143" selection-end-column="12" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1545#1554#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

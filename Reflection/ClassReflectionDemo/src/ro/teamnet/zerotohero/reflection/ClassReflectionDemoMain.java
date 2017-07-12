@@ -140,16 +140,8 @@ public class ClassReflectionDemoMain {
 		
 		//TODO invoke a method of a class the classic way for ten times, and print the timestamp (System.currentTimeMillis())
         start = System.currentTimeMillis();
-        ingeritedTestObject.printSomething();
-        ingeritedTestObject.printSomething();
-        ingeritedTestObject.printSomething();
-        ingeritedTestObject.printSomething();
-        ingeritedTestObject.printSomething();
-        ingeritedTestObject.printSomething();
-        ingeritedTestObject.printSomething();
-        ingeritedTestObject.printSomething();
-        ingeritedTestObject.printSomething();
-        ingeritedTestObject.printSomething();
+        for(int i = 0; i < 10; i++)
+            ingeritedTestObject.printSomething();
         end = System.currentTimeMillis();
         result = end - start;
         System.out.println(result);
