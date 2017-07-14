@@ -405,10 +405,6 @@ public class EntityManagerImpl implements EntityManager {
         String tableName = EntityUtils.getTableName(entityClass);
         List<ColumnInfo> columns = EntityUtils.getColumns(entityClass);
 
-        // Set Columns and condition
-
-
-
         // Set Builder
 
         builder.setTableName(tableName);
@@ -449,6 +445,148 @@ public class EntityManagerImpl implements EntityManager {
             e.printStackTrace();
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
+        } finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public <T> List<T> selectByString(Class<T> entityClass, String cond, String tableNameA, String tableNameB) {
+        Connection conn = DBManager.getConnection();
+        ArrayList<T> toReturnList = new ArrayList<T>();
+
+        // Get Builder Info
+
+        String tableName = EntityUtils.getTableName(entityClass);
+        List<ColumnInfo> columns = EntityUtils.getColumns(entityClass);
+
+        String query = new String("SELECT a.* FROM " + tableNameA + " a "
+                + "INNER JOIN " + tableNameB + " b "
+                + "on a.department_id=b.department_id "
+                + "where lower(department_name) LIKE '%" + cond + "%\'");
+
+        Statement stmt = null;
+        try {
+            stmt = conn.createStatement();
+            ResultSet resultSet = stmt.executeQuery(query);
+            while (resultSet.next()) {
+                T elem = entityClass.newInstance();
+                for (ColumnInfo each : columns) {
+                    Field field = entityClass.getDeclaredField(each.getColumnName());
+                    field.setAccessible(true);
+                    field.set(elem, EntityUtils.castFromSqlType(
+                            resultSet.getObject(each.getDbColumnName()),
+                            each.getColumnType()));
+                }
+                toReturnList.add(elem);
+            }
+            return toReturnList;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public <T> Long insertAllOneTransaction(Class<T> entityClass, List<T> entries) {
+        Connection conn = DBManager.getConnection();
+        try {
+            conn.setAutoCommit(false);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        Long nextIdVal = new Long(0);
+
+        String tableName = EntityUtils.getTableName(entityClass);
+        List<ColumnInfo> columns = EntityUtils.getColumns(entityClass);
+        for(ColumnInfo each : columns){
+            if(each.isId()){
+                nextIdVal = getNextIdVal(tableName, each.getDbColumnName());
+            }
+        }
+
+        Statement stmt = null;
+        try {
+            Long count = new Long(0);
+            for (T each : entries) {
+                QueryBuilder builder = new QueryBuilder();
+                String query;
+
+                for (ColumnInfo fieldInfo : columns) {
+                    if (fieldInfo.isId()) {
+                        fieldInfo.setValue(nextIdVal);
+                        nextIdVal++;
+                    } else {
+                        Field field = null;
+                        try {
+                            field = each.getClass().getDeclaredField(fieldInfo.getColumnName());
+                            field.setAccessible(true);
+                            fieldInfo.setValue(field.get(each));
+                        } catch (NoSuchFieldException e) {
+                            e.printStackTrace();
+                        } catch (IllegalAccessException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                builder.setQueryType(QueryType.INSERT);
+                builder.addQueryColumns(columns);
+                builder.setTableName(tableName);
+
+                query = builder.createQuery();
+
+                stmt = conn.createStatement();
+                ResultSet resultSet = stmt.executeQuery(query);
+
+                stmt.close();
+                stmt = null;
+
+                count++;
+            }
+            conn.commit();
+            return count;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            try {
+                conn.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
         } finally {
             if (stmt != null) {
                 try {

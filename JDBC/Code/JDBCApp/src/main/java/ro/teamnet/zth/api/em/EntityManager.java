@@ -15,4 +15,6 @@ public interface EntityManager {
     <T> T update(T entity) throws NoSuchFieldException, IllegalAccessException;
     void delete(Object entity) throws NoSuchFieldException, IllegalAccessException;
     <T> List<T> findByParams(Class<T> entityClass, Map<String,Object> params);
+    <T> List<T> selectByString(Class<T> entityClass, String cond, String tableNameA, String tableNameB);
+    <T> Long insertAllOneTransaction(Class<T> entityClass, List<T> entries);
 }

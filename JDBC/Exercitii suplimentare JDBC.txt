@@ -1,0 +1,16 @@
+1. Search all the employees from a department by the department name. The searching method will accept as parameter a String which will be part of the name of the department. (The department name should contain this string).
+
+E.g.:
+You have the departments: Administration and Construction.
+If the method parameter is "STR", then all the employees from the departments Administration and Construction will be found.
+
+Attention:
+- The search should be case insesitive.
+- You can use JOIN
+- You are not restricted to a certain method signature
+
+2. Create an insert method which takes a list of entities as parameter and executes them in a single transaction. 
+Try a scenario where you inserted 2 or more entities with the same id. 
+
+
+

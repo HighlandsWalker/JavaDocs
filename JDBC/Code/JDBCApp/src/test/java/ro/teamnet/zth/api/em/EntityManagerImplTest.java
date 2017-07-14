@@ -2,6 +2,7 @@ package ro.teamnet.zth.api.em;
 
 import org.junit.Test;
 import ro.teamnet.zth.appl.domain.Department;
+import ro.teamnet.zth.appl.domain.Employee;
 import ro.teamnet.zth.appl.domain.Location;
 
 import java.lang.reflect.Field;
@@ -352,6 +353,8 @@ public class EntityManagerImplTest {
         assertEquals(elem2.getCity(),           entries2.get(0).getCity());
         assertEquals(elem2.getStateProvince(),  entries2.get(0).getStateProvince());
 
+        // Stergere intrari din tabele
+
         try {
             testClass.delete(entries1.get(0));
             testClass.delete(entries2.get(0));
@@ -359,6 +362,46 @@ public class EntityManagerImplTest {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void selectByString(){
+        EntityManagerImpl testClass = new EntityManagerImpl();
+
+        String result = new String("[Employee{id=200, firstName='Jennifer', lastName='Whalen', email='JWHALEN', phoneNumber='515.123.4444', hireDate=1987-09-17 00:00:00.0, jobId='AD_ASST', salary=4400, commissionPct=null, managerId=101, departmentId=10}]");
+
+        List<Employee> employeesList =
+                testClass.selectByString(Employee.class,"str",
+                        "employees","departments");
+
+        assertEquals(result,employeesList.toString());
+    }
+
+    @Test
+    public void testInsertAllOneTransaction(){
+        EntityManagerImpl testClass = new EntityManagerImpl();
+        ArrayList<Department> toInsert = new ArrayList<>();
+
+        for(int i = 1; i < 11; i++){
+            Department elem = new Department();
+            elem.setId(new Long(270 + i));
+            elem.setDepartmentName("Test" + i);
+            elem.setLocation(new Long(1000 + (i*100)));
+            toInsert.add(elem);
+        }
+        Long result = testClass.insertAllOneTransaction(Department.class, toInsert);
+
+        assertEquals(new Long(10), result);
+
+        for(Department each : toInsert){
+            try {
+                testClass.delete(each);
+            } catch (NoSuchFieldException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
