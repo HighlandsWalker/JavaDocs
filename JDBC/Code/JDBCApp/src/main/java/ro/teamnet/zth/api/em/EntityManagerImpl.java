@@ -14,6 +14,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Gabriel.Tabus on 7/13/2017.
@@ -22,8 +23,8 @@ public class EntityManagerImpl implements EntityManager {
 
     @Override
     public <T> T findById(Class<T> entityClass, Long id) {
-        if(entityClass == null) return null;
-        if(id == null) return null;
+        if (entityClass == null) return null;
+        if (id == null) return null;
         QueryBuilder builder = new QueryBuilder();
         Connection conn = DBManager.getConnection();
 
@@ -55,16 +56,17 @@ public class EntityManagerImpl implements EntityManager {
         try {
             stmt = conn.createStatement();
             ResultSet resultSet = stmt.executeQuery(query);
-            while (resultSet.next()) {
+            if (!resultSet.next()) {
+                return null;
+            } else {
                 T elem = entityClass.newInstance();
                 for (ColumnInfo each : columns) {
                     Field field = elem.getClass().getDeclaredField(each.getColumnName());
                     field.setAccessible(true);
                     field.set(elem, EntityUtils.castFromSqlType(
-                                                        resultSet.getObject(each.getDbColumnName()),
-                                                        each.getColumnType()));
+                            resultSet.getObject(each.getDbColumnName()),
+                            each.getColumnType()));
                 }
-                conn.close();
                 return elem;
             }
         } catch (SQLException e) {
@@ -83,13 +85,20 @@ public class EntityManagerImpl implements EntityManager {
                     e.printStackTrace();
                 }
             }
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return null;
     }
 
     @Override
     public Long getNextIdVal(String tableName, String columnIdName) {
-        if(tableName == null || columnIdName == null) return null;
+        if (tableName == null || columnIdName == null) return null;
         Connection conn = DBManager.getConnection();
 
         Long toReturn = new Long(0);
@@ -108,10 +117,8 @@ public class EntityManagerImpl implements EntityManager {
             stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
-                toReturn = (Long)EntityUtils.castFromSqlType(rs.getObject(1), Long.class);
+                toReturn = (Long) EntityUtils.castFromSqlType(rs.getObject(1), Long.class);
             }
-            if (stmt != null) { stmt.close(); }
-
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -122,14 +129,20 @@ public class EntityManagerImpl implements EntityManager {
                     e.printStackTrace();
                 }
             }
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
-
         return toReturn + 1;
     }
 
     @Override
     public Object insert(Object entity) {
-        if(entity == null) return null;
+        if (entity == null) return null;
 
         QueryBuilder builder = new QueryBuilder();
         Connection conn = DBManager.getConnection();
@@ -139,9 +152,9 @@ public class EntityManagerImpl implements EntityManager {
 
         Long id = new Long(0);
 
-        for(ColumnInfo each : columns){
-            if(each.isId()){
-                Long nextIdVal = getNextIdVal(tableName, each.getColumnName());
+        for (ColumnInfo each : columns) {
+            if (each.isId()) {
+                Long nextIdVal = getNextIdVal(tableName, each.getDbColumnName());
                 each.setValue(nextIdVal);
                 id = nextIdVal;
             } else {
@@ -183,6 +196,13 @@ public class EntityManagerImpl implements EntityManager {
                     e.printStackTrace();
                 }
             }
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
         return null;
@@ -190,7 +210,7 @@ public class EntityManagerImpl implements EntityManager {
 
     @Override
     public <T> List<T> findAll(Class<T> entityClass) {
-        if(entityClass == null) return null;
+        if (entityClass == null) return null;
         QueryBuilder builder = new QueryBuilder();
         Connection conn = DBManager.getConnection();
 
@@ -214,9 +234,9 @@ public class EntityManagerImpl implements EntityManager {
             stmt = conn.createStatement();
             ResultSet resultSet = stmt.executeQuery(query);
             ArrayList<T> toReturnList = new ArrayList<T>();
-            while(resultSet.next()){
+            while (resultSet.next()) {
                 T elem = entityClass.newInstance();
-                for(ColumnInfo each : columns){
+                for (ColumnInfo each : columns) {
                     Field field = elem.getClass().getDeclaredField(each.getColumnName());
                     field.setAccessible(true);
                     field.set(elem,
@@ -239,6 +259,207 @@ public class EntityManagerImpl implements EntityManager {
             if (stmt != null) {
                 try {
                     stmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public <T> T update(T entity) throws NoSuchFieldException, IllegalAccessException {
+        if (entity == null) return null;
+        QueryBuilder builder = new QueryBuilder();
+        Connection conn = DBManager.getConnection();
+        Long id = new Long(0);
+
+        // Get Builder Info
+
+        String tableName = EntityUtils.getTableName(entity.getClass());
+        List<ColumnInfo> columns = EntityUtils.getColumns(entity.getClass());
+        Condition cond = new Condition();
+
+        // Set Columns and condition
+
+        for (ColumnInfo each : columns) {
+            Field field = entity.getClass().getDeclaredField(each.getColumnName());
+            field.setAccessible(true);
+            each.setValue(field.get(entity));
+            if (each.isId()) {
+                cond.setValue(each.getValue());
+                cond.setColumnName(each.getDbColumnName());
+                id = (Long) each.getValue();
+            }
+        }
+
+        // Set Builder
+
+        builder.setTableName(tableName);
+        builder.setQueryType(QueryType.UPDATE);
+        builder.addQueryColumns(columns);
+        builder.addCondition(cond);
+        String query = builder.createQuery();
+
+        // Execute Query
+
+        Statement stmt = null;
+        try {
+            stmt = conn.createStatement();
+            ResultSet resultSet = stmt.executeQuery(query);
+            return (T) findById(entity.getClass(), id);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public void delete(Object entity) throws NoSuchFieldException, IllegalAccessException {
+        if (entity == null) return;
+        QueryBuilder builder = new QueryBuilder();
+        Connection conn = DBManager.getConnection();
+
+        // Get Builder Info
+
+        String tableName = EntityUtils.getTableName(entity.getClass());
+        List<ColumnInfo> columns = EntityUtils.getColumns(entity.getClass());
+        Condition cond = new Condition();
+
+        // Set Columns and condition
+
+        for (ColumnInfo each : columns) {
+            Field field = entity.getClass().getDeclaredField(each.getColumnName());
+            field.setAccessible(true);
+            each.setValue(field.get(entity));
+            if (each.isId()) {
+                cond.setValue(each.getValue());
+                cond.setColumnName(each.getDbColumnName());
+                //id = (Long)each.getValue();
+            }
+        }
+
+        // Set Builder
+
+        builder.setTableName(tableName);
+        builder.setQueryType(QueryType.DELETE);
+        builder.addCondition(cond);
+        String query = builder.createQuery();
+
+        // Execute Query
+
+        Statement stmt = null;
+        try {
+            stmt = conn.createStatement();
+            ResultSet resultSet = stmt.executeQuery(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    @Override
+    public <T> List<T> findByParams(Class<T> entityClass, Map<String, Object> params) {
+        if (entityClass == null || params == null) return null;
+        QueryBuilder builder = new QueryBuilder();
+        Connection conn = DBManager.getConnection();
+
+        // Get Builder Info
+
+        String tableName = EntityUtils.getTableName(entityClass);
+        List<ColumnInfo> columns = EntityUtils.getColumns(entityClass);
+
+        // Set Columns and condition
+
+
+
+        // Set Builder
+
+        builder.setTableName(tableName);
+        builder.setQueryType(QueryType.SELECT);
+        builder.addQueryColumns(columns);
+        for (ColumnInfo each : columns) {
+            Condition cond = new Condition();
+            cond.setColumnName(each.getDbColumnName());
+            cond.setValue(params.get(each.getDbColumnName()));
+            builder.addCondition(cond);
+        }
+        String query = builder.createQuery();
+
+        // Execute Query
+
+        Statement stmt = null;
+        try {
+            stmt = conn.createStatement();
+            ResultSet resultSet = stmt.executeQuery(query);
+            ArrayList<T> toReturnList = new ArrayList<T>();
+            while (resultSet.next()) {
+                T elem = entityClass.newInstance();
+                for (ColumnInfo each : columns) {
+                    Field field = entityClass.getDeclaredField(each.getColumnName());
+                    field.setAccessible(true);
+                    field.set(elem, EntityUtils.castFromSqlType(
+                            resultSet.getObject(each.getDbColumnName()),
+                            each.getColumnType()));
+                }
+                toReturnList.add(elem);
+            }
+            return toReturnList;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (conn != null) {
+                try {
+                    conn.close();
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
