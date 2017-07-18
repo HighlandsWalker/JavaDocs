@@ -1,0 +1,18 @@
+#NOTE: This is an Aether internal implementation file, its format can be changed without prior notice.
+#Tue Apr 25 11:09:55 EEST 2017
+@default-internal-http\://nexus/content/groups/public/.lastUpdated=1493107795715
+https\://repository.jboss.org/nexus/content/repositories/releases/.lastUpdated=1484817182752
+https\://repository.jboss.org/nexus/content/repositories/thirdparty-releases/.lastUpdated=1484817182549
+https\://repository.jboss.org/nexus/content/repositories/releases/.error=
+@default-jaspersoft-http\://nexus/content/groups/public/.lastUpdated=1493107795731
+@default-central-http\://nexus/content/groups/public/.lastUpdated=1493107795731
+http\://nexus/content/repositories/eagriculture-releases/.error=Could not transfer artifact com.oracle\:ojdbc6\:pom\:11.2.0.3 from/to internal-eag (http\://nexus/content/repositories/eagriculture-releases/)\: nexus
+https\://repo.maven.apache.org/maven2/.lastUpdated=1484732780009
+https\://repo.maven.apache.org/maven2/.error=
+http\://repo1.maven.org/maven2/.error=
+http\://repo1.maven.org/maven2/.lastUpdated=1484817183049
+https\://repository.jboss.org/nexus/content/repositories/thirdparty-releases/.error=
+http\://repo.teamnet.ro/apia-public/.lastUpdated=1484750179932
+@default-jboss-public-repository-http\://nexus/content/groups/public/.lastUpdated=1493107795746
+@default-internal-eag-http\://nexus/content/repositories/eagriculture-releases/.lastUpdated=1493107795715
+http\://nexus/content/groups/public/.error=Could not transfer artifact com.oracle\:ojdbc6\:pom\:11.2.0.3 from/to jboss-public-repository (http\://nexus/content/groups/public/)\: nexus
